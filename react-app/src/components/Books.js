@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchArea from './SearchArea';
 import request from 'superagent';
+import BookList from './BookList';
 
 class Books extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class Books extends Component {
       .get('https://www.googleapis.com/books/v1/volumes?q=javascript')
       .query({ q: this.searchField })
       .then(data => {
-        console.log(data);
+        this.setState({ books: [...data.body.items] });
       })
       .catch(err => {
         console.log('caught', err.message);
@@ -36,6 +37,7 @@ class Books extends Component {
           searchBook={this.searchBook}
           handleSearch={this.handleSearch}
         />
+        <BookList books={this.state.books} />
       </div>
     );
   }
